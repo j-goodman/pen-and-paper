@@ -5,18 +5,42 @@
         <link rel='stylesheet' href='styles.css'>
         <link href="https://fonts.googleapis.com/css?family=Lato|Staatliches" rel="stylesheet">
         <script src='pressure-pad.js'></script>
+        <script src='recorder.js'></script>
         <title>Pressure Pad</title>
     </head>
     <body>
-        <div class='pen-controls'>
-            <div class='title'>Pen Controls</div>
-            <div>weight</div>
-            <input type='text' name='weight' id='pen-weight' value='6'>
-            <div>color</div>
-            <input type='text' name='color' id='pen-color' value='#fff'>
-            <div>erase</div>
-            <input type='checkbox' name='erase' id='pen-erase' unchecked>
-        </div>
+        <section class='control-bar'>
+            <div class='pen-controls sidebar'>
+                <div class='title'>Pen Controls</div>
+                <div>weight</div>
+                <input type='text' name='weight' id='pen-weight' value='6'>
+                <div>color</div>
+                <input type='text' name='color' id='pen-color' value='#fff'>
+                <div>erase</div>
+                <input type='checkbox' name='erase' id='pen-erase' unchecked>
+                <br>
+                <button type='button' id='clear-canvas'>Clear canvas</button>
+            </div>
+            <div class='record-drawing sidebar'>
+                <div class='title'>Record Drawing</div>
+                <button type='button' id='new-drawing'>Start New Drawing</button>
+                <button type='button' id='save-drawing'>Save Drawing</button>
+            </div>
+            <li class='saved-drawings sidebar'>
+              <div class='title'>Saved Drawings</div>
+            </li>
+            <div class='playback-settings sidebar'>
+                <div class='title'>Playback Settings</div>
+                <div>speed (0-100)</div>
+                <input type='text' id='playback-speed' value='50'>
+                <div>x offset</div>
+                <input type='text' id='x-offset' value='0'>
+                <div>y offset</div>
+                <input type='text' id='y-offset' value='0'>
+                <div>scale</div>
+                <input type='text' id='playback-scale' value='1'>
+            </div>
+        </section>
         <canvas id='canvas' width='640' height='480'></canvas>
     </body>
 </html>

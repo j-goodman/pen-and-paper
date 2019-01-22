@@ -8,7 +8,7 @@ let pen = {
 }
 let marks = []
 
-onload = () => {
+window.addEventListener('load', () => {
     canvas = document.getElementById('canvas')
     ctx = canvas.getContext('2d')
     canvas.addEventListener('pointermove', canvasClick)
@@ -16,11 +16,14 @@ onload = () => {
         mousedown = true
     })
     window.addEventListener('lostpointercapture', () => {
-        marks = []
+        if (marks.length > 0) {
+            recorder.bank.push(marks)
+            marks = []
+        }
         mousedown = false
     })
     setupPenControls()
-}
+})
 
 let setupPenControls = () => {
     let penWeight = document.getElementById('pen-weight')
@@ -35,25 +38,37 @@ let setupPenControls = () => {
     penErase.addEventListener('click', () => {
         pen.erase = penErase.checked
     })
+    let clearCanvas = document.getElementById('clear-canvas')
+    clearCanvas.addEventListener('click', () => {
+        clearAll()
+    })
 }
 
 let canvasClick = event => {
     if (mousedown) {
-        mark(event)
+        makeMark(event)
     }
 }
 
-let mark = event => {
+let clearAll = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+}
+
+let makeMark = event => {
     let pressure = event.pressure || .75
     let radius = pen.weight * pressure
+    mark(event.offsetX, event.offsetY, radius)
+}
+
+let mark = (x, y, radius) => {
     if (pen.erase) {
-        eraseRect(event.offsetX, event.offsetY, radius)
+        eraseRect(x, y, radius)
     } else {
-        drawCircle(event.offsetX, event.offsetY, radius)
+        drawCircle(x, y, radius)
     }
-    marks.push({x: event.offsetX, y: event.offsetY, radius: radius})
+    marks.push({x: x, y: y, radius: radius, time: Date.now()})
     if (marks.length > 1) {
-      fillBreak(marks[marks.length - 1], marks[marks.length - 2], radius)
+        fillBreak(marks[marks.length - 1], marks[marks.length - 2], radius)
     }
 }
 
@@ -85,7 +100,7 @@ let distanceBetween = (pointA, pointB) => {
 }
 
 let checkForBreak = (a, b, radius) => {
-    let strictness = 1 // float between 0 and 1
+    let strictness = 1 // value between 0 and 1
     return distanceBetween(a, b) > radius / strictness
 }
 
