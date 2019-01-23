@@ -21,14 +21,12 @@
                 <br>
                 <button type='button' id='clear-canvas'>Clear canvas</button>
             </div>
-            <div class='record-drawing sidebar'>
-                <div class='title'>Record Drawing</div>
-                <button type='button' id='new-drawing'>Start New Drawing</button>
-                <button type='button' id='save-drawing'>Save Drawing</button>
-            </div>
             <li class='saved-drawings sidebar'>
               <div class='title'>Saved Drawings</div>
             </li>
+        </section>
+        <canvas id='canvas' width='640' height='480'></canvas>
+        <section class='control-bar'>
             <div class='playback-settings sidebar'>
                 <div class='title'>Playback Settings</div>
                 <div>speed (0-100)</div>
@@ -40,7 +38,11 @@
                 <div>scale</div>
                 <input type='text' id='playback-scale' value='1'>
             </div>
+            <div class='record-drawing sidebar'>
+                <div class='title'>Record Drawing</div>
+                <button type='button' id='new-drawing'>Start New Drawing</button>
+                <button type='button' id='save-drawing'>Save Drawing</button>
+            </div>
         </section>
-        <canvas id='canvas' width='640' height='480'></canvas>
     </body>
 </html>
