@@ -3,7 +3,7 @@ let recorder = {
 }
 
 let playbackSettings = {
-    speed: .5,
+    speed: .3,
     anchorX: 0,
     anchorY: 0,
     scale: 1,
@@ -16,23 +16,25 @@ let loadSavedDrawings = () => {
     }
     let drawings = JSON.parse(localStorage.getItem('storedDrawings'))
     Object.keys(drawings).forEach(name => {
-        let drawing = document.createElement('li')
-        let trash = document.createElement('div')
-        trash.addEventListener('click', () => {
-            delete drawings[name]
-            localStorage.setItem('storedDrawings', JSON.stringify(drawings))
-            clearSavedDrawings()
-            loadSavedDrawings()
-        })
-        trash.innerText = '🗑'
-        trash.className = 'trash-button'
-        drawing.className = 'saved-drawing'
-        drawing.innerText = name
-        drawing.appendChild(trash)
-        drawing.addEventListener('click', () => {
-            repeatBank(drawings[name])
-        })
-        bank.appendChild(drawing)
+        if (name.length > 1) {
+            let drawing = document.createElement('li')
+            let trash = document.createElement('div')
+            trash.addEventListener('click', () => {
+                delete drawings[name]
+                localStorage.setItem('storedDrawings', JSON.stringify(drawings))
+                clearSavedDrawings()
+                loadSavedDrawings()
+            })
+            trash.innerText = '🗑'
+            trash.className = 'trash-button'
+            drawing.className = 'saved-drawing'
+            drawing.innerText = name
+            drawing.appendChild(trash)
+            drawing.addEventListener('click', () => {
+              repeatBank(drawings[name])
+            })
+            bank.appendChild(drawing)
+        }
     })
 }
 
@@ -52,7 +54,7 @@ let setupRecordingControls = () => {
     })
     let saveDrawing = document.getElementById('save-drawing')
     saveDrawing.addEventListener('click', () => {
-        saveRecording(prompt('Name your drawing:'))
+        saveRecording(prompt('Name your drawing:') || 'untitled')
         clearSavedDrawings()
         loadSavedDrawings()
     })
@@ -102,6 +104,10 @@ let repeatBank = (bank) => { // speed is a value between 0 and 1
     let scale = playbackSettings.scale
     bank.forEach(stroke => {
         stroke.forEach((point, index) => {
+            // if (!point.radiusChanged) {
+            //     point.radius /= 1.65
+            //     point.radiusChanged = true
+            // }
             setTimeout(() => {
                 mark(point.x * scale + anchorX, point.y * scale + anchorY, point.radius)
                 if (index === stroke.length - 1) {

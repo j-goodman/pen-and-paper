@@ -4,7 +4,7 @@ let mousedown = false
 let pen = {
     color: '#fff',
     erase: false,
-    weight: 6
+    weight: 4
 }
 let marks = []
 
@@ -41,6 +41,7 @@ let setupPenControls = () => {
     let clearCanvas = document.getElementById('clear-canvas')
     clearCanvas.addEventListener('click', () => {
         clearAll()
+        startRecording()
     })
 }
 
