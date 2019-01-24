@@ -11,17 +11,22 @@ let marks = []
 window.addEventListener('load', () => {
     canvas = document.getElementById('canvas')
     ctx = canvas.getContext('2d')
+    let mouseDown = () => {
+      mousedown = true
+    }
+    let mouseUp = () => {
+      if (marks.length > 0) {
+        recorder.bank.push(marks)
+        marks = []
+      }
+      mousedown = false
+    }
     canvas.addEventListener('pointermove', canvasClick)
-    window.addEventListener('gotpointercapture', () => {
-        mousedown = true
-    })
-    window.addEventListener('lostpointercapture', () => {
-        if (marks.length > 0) {
-            recorder.bank.push(marks)
-            marks = []
-        }
-        mousedown = false
-    })
+    window.addEventListener('gotpointercapture', mouseDown)
+    window.addEventListener('lostpointercapture', mouseUp)
+    canvas.addEventListener('mousemove', canvasClick)
+    window.addEventListener('mousedown', mouseDown)
+    window.addEventListener('mouseup', mouseUp)
     setupPenControls()
 })
 

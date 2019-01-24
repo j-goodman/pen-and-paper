@@ -77,6 +77,10 @@ let setupRecordingControls = () => {
     scale.addEventListener('keyup', () => {
         playbackSettings.scale = parseFloat(scale.value)
     })
+    let weightModifier = document.getElementById('playback-weight-modifier')
+    weightModifier.addEventListener('keyup', () => {
+        playbackSettings.weightModifier = parseFloat(weightModifier.value)
+    })
 }
 
 window.addEventListener('load', loadSavedDrawings)
@@ -104,10 +108,10 @@ let repeatBank = (bank) => { // speed is a value between 0 and 1
     let scale = playbackSettings.scale
     bank.forEach(stroke => {
         stroke.forEach((point, index) => {
-            // if (!point.radiusChanged) {
-            //     point.radius /= 1.65
-            //     point.radiusChanged = true
-            // }
+            if (point.radiusChanged !== playbackSettings.weightModifier) {
+                point.radius /= playbackSettings.weightModifier
+                point.radiusChanged = playbackSettings.weightModifier
+            }
             setTimeout(() => {
                 mark(point.x * scale + anchorX, point.y * scale + anchorY, point.radius)
                 if (index === stroke.length - 1) {
